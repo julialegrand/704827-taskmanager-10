@@ -1,12 +1,12 @@
-import {Colors} from '../const.js';
+import {COLORS} from '../const.js';
 
-const DescriptionItems = [
+const DESCRIPTION_ITEMS = [
   `Изучить теорию`,
   `Сделать домашку`,
   `Пройти интенсив на соточку`,
 ];
 
-const DefaultRepeatingDays = {
+const DEFAULT_REPEATING_DAYS = {
   'mo': false,
   'tu': false,
   'we': false,
@@ -16,13 +16,18 @@ const DefaultRepeatingDays = {
   'su': false,
 };
 
-const Tags = [
+const TAGS = [
   `homework`,
   `theory`,
   `practice`,
   `intensive`,
   `keks`
 ];
+
+
+const getRandom = () => {
+  return Math.random() > 0.5;
+};
 
 const getRandomArrayItem = (array) => {
   const randomIndex = getRandomIntegerNumber(0, array.length);
@@ -36,7 +41,7 @@ const getRandomIntegerNumber = (min, max) => {
 
 const getRandomDate = () => {
   const targetDate = new Date();
-  const sign = Math.random() > 0.5 ? 1 : -1;
+  const sign = getRandom() ? 1 : -1;
   const diffValue = sign * getRandomIntegerNumber(0, 7);
 
   targetDate.setDate(targetDate.getDate() + diffValue);
@@ -45,28 +50,28 @@ const getRandomDate = () => {
 };
 
 const generateRepeatingDays = () => {
-  return Object.assign({}, DefaultRepeatingDays, {
-    'mo': Math.random() > 0.5,
+  return Object.assign({}, DEFAULT_REPEATING_DAYS, {
+    'mo': getRandom(),
   });
 };
 
 const generateTags = (tags) => {
   return tags
-    .filter(() => Math.random() > 0.5)
+    .filter(() => getRandom())
     .slice(0, 3);
 };
 
 const generateTask = () => {
-  const dueDate = Math.random() > 0.5 ? null : getRandomDate();
+  const dueDate = getRandom() ? null : getRandomDate();
 
   return {
-    description: getRandomArrayItem(DescriptionItems),
+    description: getRandomArrayItem(DESCRIPTION_ITEMS),
     dueDate,
-    repeatingDays: dueDate ? DefaultRepeatingDays : generateRepeatingDays(),
-    tags: new Set(generateTags(Tags)),
-    color: getRandomArrayItem(Colors),
-    isFavorite: Math.random() > 0.5,
-    isArchive: Math.random() > 0.5,
+    repeatingDays: dueDate ? DEFAULT_REPEATING_DAYS : generateRepeatingDays(),
+    tags: new Set(generateTags(TAGS)),
+    color: getRandomArrayItem(COLORS),
+    isFavorite: getRandom(),
+    isArchive: getRandom(),
   };
 };
 
