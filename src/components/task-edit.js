@@ -1,4 +1,3 @@
-/* eslint-disable eol-last */
 import {COLORS, DAYS, MONTH_NAMES} from '../const.js';
 import {createElement, formatTime} from '../utils.js';
 
