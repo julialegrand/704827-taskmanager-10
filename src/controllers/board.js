@@ -1,10 +1,13 @@
 import LoadMoreButtonComponent from '../components/button.js';
+import BoardComponent from '../components/board.js';
 import TaskEditComponent from '../components/task-edit.js';
 import TaskComponent from '../components/task.js';
 import TasksComponent from '../components/tasks.js';
 import SortComponent from '../components/sort.js';
 import NoTasksComponent from '../components/no-tasks.js';
 import {render, remove, replace, RenderPosition} from '../utils/render.js';
+import FilterComponent from '../components/filter.js';
+import SiteMenuComponent from '../components/menu.js';
 
 const SHOWING_TASKS_COUNT_ON_START = 8;
 const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
@@ -42,17 +45,28 @@ const renderTask = (taskListElement, task) => {
 };
 
 export default class BoardController {
-  constructor(container) {
-    this._container = container;
-
+  constructor(filters) {
+    this._container = new BoardComponent();
+    this._filterComponent = new FilterComponent(filters);
+    this._siteMenuComponent = new SiteMenuComponent();
     this._noTasksComponent = new NoTasksComponent();
     this._sortComponent = new SortComponent();
     this._tasksComponent = new TasksComponent();
     this._loadMoreButtonComponent = new LoadMoreButtonComponent();
   }
+
   render(tasks) {
     const container = this._container.getElement();
     const isAllTasksArchived = tasks.every((task) => task.isArchive);
+
+    const siteMainElement = document.querySelector(`.main`);
+    const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
+
+    render(siteHeaderElement, this._siteMenuComponent, RenderPosition.BEFOREEND);
+
+    render(siteMainElement, this._filterComponent, RenderPosition.BEFOREEND);
+
+    render(siteMainElement, this._container, RenderPosition.BEFOREEND);
 
     if (isAllTasksArchived) {
       render(container, this._noTasksComponent, RenderPosition.BEFOREEND);
